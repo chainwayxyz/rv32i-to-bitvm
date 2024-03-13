@@ -20,7 +20,7 @@ export const ASM_SYSCALL = 18
 export const ASM_LOAD	 = 19
 export const ASM_STORE	 = 20
 
-export const LOG_TRACE_LEN = 24 // TODO: this should be 32
+export const LOG_TRACE_LEN = 40 // TODO: this should be 32
 // Length of the trace
 export const TRACE_LEN = 2 ** LOG_TRACE_LEN
 
@@ -265,8 +265,8 @@ export class VM {
             if (snapshot.stepCount == maxSteps) {
                throw "hit max steps"
             }
-            console.log("Step count = ", snapshot.stepCount);
         }
+        console.log("Step count = ", snapshot.stepCount);
         return snapshot
     }
 }
