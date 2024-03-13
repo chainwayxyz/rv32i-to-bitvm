@@ -70,6 +70,10 @@ export class Instruction {
         let type = lookup["" + this.type];
         return `${type} ${this.addressA} ${this.addressB} ${this.addressC}`
     }
+
+    toJson() {
+        return `\{\"asm_type\": ${this.type}, \"address_a\": ${toU32(this.addressA || 0)}, \"address_b\": ${toU32(this.addressB || 0)}, \"address_c\": ${toU32(this.addressC || 0)}\}`
+    }
 }
 //export const compileProgram = source => source.map(instruction => new Instruction(...instruction))
 
@@ -261,6 +265,7 @@ export class VM {
             if (snapshot.stepCount == maxSteps) {
                throw "hit max steps"
             }
+            console.log("Step count = ", snapshot.stepCount);
         }
         return snapshot
     }
