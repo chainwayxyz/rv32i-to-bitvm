@@ -832,9 +832,22 @@ async function transpile(fileContents: Buffer) {
    for (let i = 0; i < assembly.length; i++) {
       bitvm_code.push(assembly[i].opcode);
    }
-   let vm = new bitvm.VM(bitvm_code, memory);
-   let result_snapshot = vm.run();
-   console.log(process.argv[2] + " result code: " + result_snapshot.read(tmp()) + " " + result_snapshot.read(reg2mem(28)));
+
+   let s = "{\n    \"program\": PROGRAM,\n    \"memory_entries\": MEMORY\n}";
+   let a = bitvm_code.map(element => {
+      return "        " + element.toJson();
+   }).join(",\n");
+   a = "[\n" + a + "\n    ]";
+   let b = memory.map(element => {
+      return element.toString();
+   }).join(", ");
+   b = "[" + b + "]";
+   fs.writeFileSync("bitvm.json", s.replace("PROGRAM", a).replace("MEMORY", b));
+   console.log("vm saved to json file");
+   
+   // let vm = new bitvm.VM(bitvm_code, memory);
+   // let result_snapshot = vm.run();
+   // console.log(process.argv[2] + " result code: " + result_snapshot.read(tmp()) + " " + result_snapshot.read(reg2mem(28)));
 }
 
 transpile(fs.readFileSync(process.argv[2])).catch((err) => {
